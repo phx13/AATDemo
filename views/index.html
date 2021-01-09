@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+    <script type="text/javascript" src="/js/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+    <title>AAT</title>
+</head>
+<body>
+<div class="container">
+    <!-- nav -->
+    <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light col-sm-12 col-12">
+            <a class="navbar-brand" href="https://www.cardiff.ac.uk/">
+                <img src="/images/Logo.jpg" width="30" height="30"
+                     class="d-inline-block align-top" alt="Cardiff University" loading="lazy">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    {% if session.get('login') == 'true' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account">Account: {{session['nickname']}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/course">Course</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+    </div>
+
+    <div style="height: 30px"></div>
+
+    <!-- jumbotron -->
+    <div class="row">
+        <div class="jumbotron col-sm-12 col-12">
+            <h1 class="display-4">AAT</h1>
+            <p class="lead">An automated assessment tool of Cardiff University</p>
+            <hr class="my-4">
+            <p>Technical test by Ce</p>
+            {% if session.get('login') == 'true' %}
+            <h1 class="display-4">Welcome: {{session.get('nickname')}}</h1>
+            {% else %}
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">
+                Login / Signup
+            </button>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr>
+    <blockquote class="blockquote text-center">
+        <p><small><a href="http://www.beian.miit.gov.cn/" target="_blank" style="color: #aaaaaa">京ICP备2020049110号-1</a></small>
+        </p>
+    </blockquote>
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="login-tab" data-toggle="tab" href="#Login" role="tab"
+                               aria-controls="login"
+                               aria-selected="true">
+                                <h6>Login</h6>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="signup-tab" data-toggle="tab" href="#Signup" role="tab"
+                               aria-controls="signup"
+                               aria-selected="false">
+                                <h6>Signup</h6>
+                            </a>
+                        </li>
+                    </ul>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="tab-content border border-top-0" id="myTabContent">
+                        <div class="tab-pane fade show active" id="Login" role="tabpanel" aria-labelledby="home-tab">
+                            <form class="container">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-12" for="loginEmail">Email</label>
+                                    <input type="email" class="form-control col-sm-7 col-12" name="loginEmail"
+                                           id="loginEmail">
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-12" for="loginPassword">Password</label>
+                                    <input type="password" class="form-control col-sm-7 col-12" name="loginPassword"
+                                           id="loginPassword">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="Signup" role="tabpanel" aria-labelledby="profile-tab">
+                            <form class="container">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-12" for="registerEmail">Email</label>
+                                    <input type="email" class="form-control col-sm-7 col-12" name="registerEmail"
+                                           id="registerEmail">
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-12">Identity</label>
+                                    <div class="btn-group btn-group-toggle col-sm-7 col-12" data-toggle="buttons"
+                                         style="padding-left: 0px; padding-right: 0px">
+                                        <label class="btn btn-secondary active">
+                                            <input type="radio" name="identity" id="identityStudent" checked> Student
+                                        </label>
+                                        <label class="btn btn-secondary">
+                                            <input type="radio" name="identity" id="identityStaff"> Staff
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-12" for="registerPassword">Password</label>
+                                    <input type="password" class="form-control col-sm-7 col-12" name="registerPassword"
+                                           id="registerPassword">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="loginOrRegister()">
+                        Login / Signup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

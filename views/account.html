@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+    <script type="text/javascript" src="/js/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/echarts.js"></script>
+    <script type="text/javascript" src="/js/scorestat.js"></script>
+    <title>Account</title>
+</head>
+<body>
+<div class="container">
+    <!-- nav -->
+    <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light col-sm-12 col-12">
+            <a class="navbar-brand" href="https://www.cardiff.ac.uk/">
+                <img src="/images/Logo.jpg" width="30" height="30"
+                     class="d-inline-block align-top" alt="Cardiff University" loading="lazy">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    {% if session.get('login') == 'true' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account">Account: {{currentaccount.nickname}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/course">Course</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+    </div>
+    <div style="height: 30px"></div>
+    <!-- account -->
+    <div class="row">
+        <div class="col-sm-3 col-12">
+            <div class="card">
+                <img src="{{currentaccount.image}}"
+                     class="card-img-top mx-auto">
+                <div class="card-body">
+                    <h5 class="card-title">{{currentaccount.nickname}}</h5>
+                    <p class="card-text">{{currentaccount.email}}</p>
+                    <hr>
+                    <p class="card-text">{{currentaccount.profile}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9 col-12">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
+                       role="tab"
+                       aria-controls="nav-profile" aria-selected="false">Profile</a>
+                    <a class="nav-item nav-link" id="nav-stat-tab" data-toggle="tab" href="#nav-stat" role="tab"
+                       aria-controls="nav-stat" aria-selected="false">Stat</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-profile" role="tabpanel"
+                     aria-labelledby="nav-profile-tab">
+                    <div style="height: 30px"></div>
+                    <form method="post" enctype="multipart/form-data">
+                        <img src="{{currentaccount.image}}" id="imgAvatar" class="rounded mx-auto d-block img-thumbnail"
+                             style="height: 250px; width: 250px; margin-bottom: 20px;">
+                        <div class="input-group" style="width: 250px; margin: 20px auto;">
+                            <div class="custom-file">
+                                <input onchange="fileChange(this)" type="file" class="custom-file-input"
+                                       id="inputGroupFile"
+                                       aria-describedby="inputGroupFileAddon">
+                                <label class="custom-file-label" id="filenameLabel" for="inputGroupFile">Choose avatar
+                                    image</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputNickname" class="col-sm-2 col-form-label">Nickname</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputNickname"
+                                       value="{{currentaccount.nickname}}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="staticEmail"
+                                       value="{{currentaccount.email}}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="staticIdentity" class="col-sm-2 col-form-label">Identity</label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="staticIdentity"
+                                       value="{{currentaccount.identity}}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="inputPassword">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputProfile" class="col-sm-2 col-form-label">Profile</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputProfile"
+                                       value="{{currentaccount.profile}}">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-success" style="float: right;"
+                                onclick="UpdateProfile()">Update Profile
+                        </button>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="nav-stat" role="tabpanel" aria-labelledby="nav-stat-tab">
+                    <div style="height: 30px"></div>
+
+
+                    <!--student stat-->
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        {% for courseid in courses %}
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="pill-course-{{courseid}}-tab" data-toggle="pill"
+                               href="#pill-course-{{courseid}}"
+                               onclick="ShowScoreStat(this, '{{currentaccount.identity}}');" role="tab"
+                               aria-controls="pill-course-{{courseid}}"
+                               aria-selected="false">{{courseid}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        {% for courseid in courses %}
+                        <div class="tab-pane fade" id="pill-course-{{courseid}}" role="tabpanel"
+                             aria-labelledby="pill-course-{{courseid}}-tab">
+                            <h1 class="display-4">{{examdict[courseid][0]}}</h1>
+                            <div style="height: 30px"></div>
+                            {% for exam in examdict[courseid][1] %}
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input"
+                                       id="switch-{{courseid}}-{{exam}}" checked="true"
+                                       onclick="UpdateScoreStat(this, '{{currentaccount.identity}}');">
+                                <label class="custom-control-label"
+                                       for="switch-{{courseid}}-{{exam}}">{{exam}}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div style="height: 30px"></div>
+                    <div id="formativeScoreStat" style="width: 100%; height: 400px;"></div>
+                    <div id="summativeScoreStat" style="width: 100%; height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
